@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Episode;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Entity\Program;
 use App\Entity\Season;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,7 +62,7 @@ class ProgramController extends AbstractController
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonId":"id"}})
      * @return Response
      */
-    public function showSeason(Program $program, Season $season): response
+    public function showSeason(Program $program, Season $season): Response
     {
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
@@ -87,7 +88,7 @@ class ProgramController extends AbstractController
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonId":"id"}})
      * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeId":"id"}})
      */
-    public function showEpisode(Program $program, Season $season, Episode $episode): response
+    public function showEpisode(Program $program, Season $season, Episode $episode): Response
     {
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
@@ -97,14 +98,14 @@ class ProgramController extends AbstractController
             ->getRepository(Season::class)
             ->findOneBy(['id' => $season]);
 
-        $episodes = $this->getDoctrine()
+        $episode = $this->getDoctrine()
             ->getRepository(Episode::class)
             ->findOneBy(['id' => $episode]);
 
-        return $this->render('program/season_show.html.twig', [
+        return $this->render('program/episode_show.html.twig', [
             'program' => $program,
             'season' => $season,
-            'episodes' => $episodes
+            'episode' => $episode
         ]);
     }
 }
